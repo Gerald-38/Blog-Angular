@@ -1,10 +1,10 @@
-<div class="container">
-  <div class="row">
-    <div class="col-xs-12">
-      <h2>Posts</h2>
-      <ul class="list-group">
-        <app-postlist [posts]="posts"></app-postlist> 
-      </ul>
-    </div>
+<nav class="navbar navbar-default">
+  <div class="container-fluid">
+    <ul class="nav navbar-nav">
+      <li routerLinkActive="active"><a routerLink="posts">Posts</a></li>
+      <li routerLinkActive="active"><a routerLink="newPost">Ajouter un post</a></li>
+    </ul>
   </div>
-</div>
+</nav>
+
+<router-outlet></router-outlet>

@@ -1,4 +1,9 @@
 import { Component, Input, OnInit } from '@angular/core';
+import {PostService} from '../services/post.service';
+import {Subscription} from "rxjs";
+
+class Post {
+}
 
 @Component({
   selector: 'app-post-list-item',
@@ -9,24 +14,38 @@ import { Component, Input, OnInit } from '@angular/core';
 
 export class PostListItemComponent implements OnInit {
 
-	@Input() post: any;
-	loveIts: number;
+	posts: Post[];
+  @Input() post: any;
+	@Input() indexOfPost: number;
+	@Input() loveIts: number;
 	created_at: Date;
+  postsSubscription: Subscription;
 
 
-	constructor() {
+	constructor(private postService: PostService) {	}
 
-		this.loveIts = 0;
-		this.created_at = new Date;
-	}
+	ngOnInit() {
 
-	ngOnInit() {  }
+    this.postsSubscription = this.postService.postSubject.subscribe(
+      (posts: Post[]) => {
+        this.posts = posts;
+      }
+    );
+    this.postService.emitPostSubject();
+
+    this.created_at = new Date;
+  }
 
 	onLovePlus() {
-	  	this.loveIts +=1;
+	  this.postService.increaseLoveits(this.indexOfPost);
 	}
 
 	onLoveMoins() {
-		this.loveIts -=1;
+		this.postService.decreaseLoveits(this.indexOfPost);
 	}
+
+	onDeletePost(post: Post) {
+	  this.postService.removePost(this.post);
+  }
+
 }
